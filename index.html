@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Project Management Tool - Lakshmi</title>
+    <style>
+        body { font-family: Arial; background: #f0f4f8; padding: 20px; }
+        h1 { text-align: center; color: #2b6cb0; }
+        .card { background: white; padding: 20px; border-radius: 12px; margin: 15px auto; max-width: 600px; }
+        input, select { width: 100%; padding: 10px; margin: 6px 0; border: 1px solid #ccc; border-radius: 8px; }
+        button { width: 100%; padding: 10px; background: #2b6cb0; color: white; border: none; border-radius: 8px; font-weight: bold; }
+        .project { background: #ebf8ff; border-left: 5px solid #2b6cb0; padding: 12px; margin: 10px 0; }
+        .task { background: white; padding: 8px; margin: 5px 0; border-radius: 6px; }
+    </style>
+</head>
+<body>
+
+    <h1>🚀 Project Management Tool</h1>
+
+    <!-- 1. PROJECT CREATE -->
+    <div class="card">
+        <h3>1. Create Project</h3>
+        <input id="pname" placeholder="Project Name">
+        <input id="team" placeholder="Team Members">
+        <button onclick="addProject()">Create Project</button>
+    </div>
+
+    <!-- 2. TASK ADD -->
+    <div class="card">
+        <h3>2. Add Task</h3>
+        <input id="tname" placeholder="Task Title">
+        <input type="date" id="deadline">
+        <select id="status">
+            <option>To Do</option>
+            <option>Doing</option>
+            <option>Done</option>
+        </select>
+        <select id="projectSelect">
+            <option>First create a project</option>
+        </select>
+        <button onclick="addTask()">Add Task</button>
+    </div>
+
+    <!-- 3. DISPLAY -->
+    <div class="card">
+        <h3>3. All Projects & Tasks</h3>
+        <div id="projects"></div>
+    </div>
+
+<script>
+let projects = [];
+
+function addProject() {
+    let name = document.getElementById('pname').value;
+    let team = document.getElementById('team').value;
+    if(name == "") { alert("Project name pettu"); return; }
+    projects.push({ name: name, team: team, tasks: [] });
+    updateUI();
+}
+
+function addTask() {
+    let title = document.getElementById('tname').value;
+    let deadline = document.getElementById('deadline').value;
+    let status = document.getElementById('status').value;
+    let pIndex = document.getElementById('projectSelect').value;
+    if(title == "") { alert("Task pettu"); return; }
+    projects[pIndex].tasks.push({ title: title, deadline: deadline, status: status });
+    updateUI();
+}
+
+function updateUI() {
+    let html = "";
+    let options = "";
+    projects.forEach((p, i) => {
+        options += `<option value="${i}">${p.name}</option>`;
+        html += `<div class="project"><h4>${p.name} - ${p.team}</h4>`;
+        p.tasks.forEach(t => {
+            html += `<div class="task">✅ ${t.title} - ${t.status} - ${t.deadline}</div>`;
+        });
+        html += `</div>`;
+    });
+    document.getElementById('projects').innerHTML = html;
+    document.getElementById('projectSelect').innerHTML = options;
+}
+</script>
+
+</body>
+</html>
